@@ -2,6 +2,7 @@ package com.rohitbhoompally.tack;
 
 import java.util.Locale;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -48,7 +49,6 @@ public class MainActivity extends Activity {
         mViewPager.setCurrentItem(1);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -70,7 +70,6 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to

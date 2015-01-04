@@ -1,9 +1,12 @@
 package com.rohitbhoompally.tack;
 
+import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -22,6 +25,7 @@ public class LayoutFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -51,5 +55,18 @@ public class LayoutFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        restoreActionBar();
+    }
+
+    public void restoreActionBar() {
+        ActionBar actionBar = getActivity().getActionBar();
+        actionBar.setDisplayShowTitleEnabled(false); // Was true initially.
+        actionBar.setDisplayUseLogoEnabled(true); // To show the logo.
+        actionBar.setLogo(getResources().getDrawable(R.drawable.ic_frames));
     }
 }
