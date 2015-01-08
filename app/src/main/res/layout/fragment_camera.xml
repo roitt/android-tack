@@ -8,7 +8,21 @@
     <FrameLayout
         android:id="@+id/camera_preview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+
+    />
+
+    <com.rohitbhoompally.tack.SquareLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top">
+
+    </com.rohitbhoompally.tack.SquareLayout>
+
+    <com.rohitbhoompally.tack.DrawingView
+        android:id="@+id/drawView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <RelativeLayout
         android:id="@+id/bottom_rl"

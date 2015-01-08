@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.ShutterCallback;
@@ -52,12 +53,12 @@ public class CameraFragment extends Fragment {
     FrameLayout cameraLayout;
     ImageButton flashButton;
     ImageButton switchButton;
+    DrawingView drawingView;
 
     List<String> flashModes;
     private int mCameraId = 0;
 
-    private static String TAG = "Camera Fragment";
-    public static final int MEDIA_TYPE_IMAGE = 1;
+
     private static String activeFlash = Camera.Parameters.FLASH_MODE_OFF;
 
     // newInstance constructor for creating fragment with arguments
@@ -77,14 +78,19 @@ public class CameraFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mContext = getActivity();
+        mCameraId = SharedPrefHandler.getCameraWhich(mContext);
+        activeFlash = SharedPrefHandler.getFlashMode(mContext);
         createCameraPreview();
         checkCameras();
         checkFlash();
+        setFlashMode(activeFlash);
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        SharedPrefHandler.setFlashMode(mContext, activeFlash);
+        SharedPrefHandler.setCameraWhich(mContext, mCameraId);
         mPreview.stop();
         cameraLayout.removeView(mPreview); // This is necessary.
         mPreview = null;
@@ -100,6 +106,7 @@ public class CameraFragment extends Fragment {
 
         flashButton = (ImageButton) view.findViewById(R.id.flash_button);
         switchButton = (ImageButton) view.findViewById(R.id.switch_camera_button);
+        drawingView = (DrawingView) view.findViewById(R.id.drawView);
 
         // Resize the layout
         WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
@@ -117,7 +124,7 @@ public class CameraFragment extends Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // get an image from the camera
+                        mPreview.takePicture();
                     }
                 }
         );
@@ -144,59 +151,6 @@ public class CameraFragment extends Fragment {
         restoreActionBar();
     }
 
-    private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
-
-        @Override
-        public void onPictureTaken(byte[] data, Camera camera) {
-            File pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
-            if (pictureFile == null){
-                Log.d(TAG, "Error creating media file, check storage permissions");
-                return;
-            }
-
-            try {
-                FileOutputStream fos = new FileOutputStream(pictureFile);
-                fos.write(data);
-                fos.close();
-            } catch (FileNotFoundException e) {
-                Log.d(TAG, "File not found: " + e.getMessage());
-            } catch (IOException e) {
-                Log.d(TAG, "Error accessing file: " + e.getMessage());
-            }
-        }
-    };
-
-    /** Create a File for saving an image or video */
-    private static File getOutputMediaFile(int type){
-        // To be safe, you should check that the SDCard is mounted
-        // using Environment.getExternalStorageState() before doing this.
-
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "MyCameraApp");
-        // This location works best if you want the created images to be shared
-        // between applications and persist after your app has been uninstalled.
-
-        // Create the storage directory if it does not exist
-        if (! mediaStorageDir.exists()){
-            if (! mediaStorageDir.mkdirs()){
-                Log.d("MyCameraApp", "failed to create directory");
-                return null;
-            }
-        }
-
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File mediaFile;
-        if (type == MEDIA_TYPE_IMAGE){
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "IMG_"+ timeStamp + ".jpg");
-        } else {
-            return null;
-        }
-
-        return mediaFile;
-    }
-
     public void restoreActionBar() {
         ActionBar actionBar = getActivity().getActionBar();
         actionBar.setDisplayShowTitleEnabled(false); // Was true initially.
@@ -212,7 +166,27 @@ public class CameraFragment extends Fragment {
         return mActionBarSize;
     }
 
+    public void setFlashMode(String flashMode) {
+        activeFlash = flashMode;
+        flashButton.setImageDrawable(getFlashDrawable(flashMode));
+        mPreview.changeCameraFlashParameters(flashMode);
+    }
+
+    public Drawable getFlashDrawable(String flashMode) {
+        switch (flashMode) {
+            case Camera.Parameters.FLASH_MODE_OFF:
+                return getResources().getDrawable(R.drawable.flash_no_selector);
+            case Camera.Parameters.FLASH_MODE_ON:
+                return getResources().getDrawable(R.drawable.flash_selector);
+            case Camera.Parameters.FLASH_MODE_AUTO:
+                return getResources().getDrawable(R.drawable.flash_auto_selector);
+            default:
+                return getResources().getDrawable(R.drawable.flash_no_selector);
+        }
+    }
+
     public void toggleFlashes() {
+        checkFlash();
         String nextFlashMode = Camera.Parameters.FLASH_MODE_OFF;
         switch (activeFlash) {
             case Camera.Parameters.FLASH_MODE_OFF:
@@ -245,17 +219,6 @@ public class CameraFragment extends Fragment {
         }
         mPreview.changeCameraFlashParameters(nextFlashMode);
     }
-    ShutterCallback shutterCallback = new ShutterCallback() {
-        public void onShutter() {
-            //			 Log.d(TAG, "onShutter'd");
-        }
-    };
-
-    PictureCallback rawCallback = new PictureCallback() {
-        public void onPictureTaken(byte[] data, Camera camera) {
-            //			 Log.d(TAG, "onPictureTaken - raw");
-        }
-    };
 
     public void checkCameras() {
         if(mPreview.checkFrontFacingCamera()) {
@@ -277,15 +240,22 @@ public class CameraFragment extends Fragment {
     public void toggleCameras() {
         mPreview.stop();
         cameraLayout.removeView(mPreview);
-        if(mCameraId == 0)
+        if(mCameraId == 0) {
             mCameraId = 1;
-        else if(mCameraId == 1)
+            flashButton.setImageDrawable(getResources().getDrawable(R.drawable.flash_no_selector));
+            flashButton.setClickable(false);
+        }
+        else if(mCameraId == 1) {
             mCameraId = 0;
+            // Update to what is current.
+            flashButton.setImageDrawable(getResources().getDrawable(R.drawable.flash_no_selector));
+            flashButton.setClickable(true);
+        }
         createCameraPreview();
     }
 
     public void createCameraPreview() {
-        mPreview = new CameraPreview(getActivity(), mCameraId, CameraPreview.LayoutMode.FitToParent);
+        mPreview = new CameraPreview(getActivity(), mCameraId, CameraPreview.LayoutMode.FitToParent, drawingView);
         LayoutParams previewLayoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         cameraLayout.addView(mPreview, 0, previewLayoutParams);
     }
