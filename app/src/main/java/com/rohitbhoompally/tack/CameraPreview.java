@@ -546,7 +546,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE){
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "IMG_"+ timeStamp + ".jpg");
+                    "TACK_"+ timeStamp + ".jpg");
         } else {
             return null;
         }

@@ -15,7 +15,8 @@
     <com.rohitbhoompally.tack.SquareLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="top">
+        android:layout_gravity="top"
+        android:background="#AEFFFFFF">
 
     </com.rohitbhoompally.tack.SquareLayout>
 

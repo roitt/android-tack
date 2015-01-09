@@ -3,4 +3,5 @@
     <drawable name="actionbar_background">#ff2C9DC7</drawable>
     <drawable name="transparent">#00000000</drawable>
     <drawable name="grey">#FF3C3D3D</drawable>
+    <drawable name="black">#AF000000</drawable>
 </resources>
