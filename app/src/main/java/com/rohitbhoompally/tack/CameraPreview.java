@@ -463,6 +463,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             } catch (IOException e) {
                 Log.d(TAG, "Error accessing file: " + e.getMessage());
             }
+
         }
     };
 
@@ -553,7 +554,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             return null;
         }
 
-        mActivity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(mediaFile)));
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Uri contentUri = Uri.fromFile(mediaFile);
+        mediaScanIntent.setData(contentUri);
+        mActivity.sendBroadcast(mediaScanIntent);
 
         return mediaFile;
     }
@@ -580,6 +584,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 e.printStackTrace();
             }
         }
+        BusProvider.getInstance().post(new PictureTakenEvent("Picture Taken"));
     }
 
     //returns current exif orientation of the image being captured, by taking the fixed orientation of the camera and
@@ -589,7 +594,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         DisplayMetrics dm = new DisplayMetrics();
         mActivity.getWindowManager().getDefaultDisplay().getMetrics(dm);
         android.hardware.Camera.CameraInfo info = new android.hardware.Camera.CameraInfo();
-        android.hardware.Camera.getCameraInfo(0, info);
+        android.hardware.Camera.getCameraInfo(mCameraId, info);
 
         int orientation = 0;
         switch (rotation)

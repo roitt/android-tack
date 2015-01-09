@@ -30,7 +30,9 @@ import android.widget.CursorAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
+import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -66,6 +68,7 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
     public void onResume() {
         super.onResume();
         mContext = getActivity();
+        BusProvider.getInstance().register(this);
     }
 
     /*
@@ -76,10 +79,11 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
     public Loader<Cursor> onCreateLoader(int loaderID, Bundle bundle)
     {
         String[] projection = { MediaStore.Images.Media.DATA,
-                MediaStore.Images.Media._ID, MediaStore.Images.Media.DISPLAY_NAME };
+                MediaStore.Images.Media._ID, MediaStore.Images.Media.DISPLAY_NAME, MediaStore.Images.Media.DATE_ADDED};
         String select = MediaStore.Images.Media.DISPLAY_NAME + " like 'TACK_%'";
+        String sort = MediaStore.Images.Media.DATE_ADDED;
         Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        return new CursorLoader(mContext, uri, projection, select, null, null);
+        return new CursorLoader(mContext, uri, projection, select, null, sort);
     }
 
     @Override
@@ -258,5 +262,15 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
             layoutView.setTag(thumbView);
             return layoutView;
         }
+    }
+
+    public void restartLoader(){
+        getLoaderManager().restartLoader(0, null, this);
+    }
+
+    @Subscribe
+    public void pictureRefresh(PictureTakenEvent event) {
+        // TODO: React to the event somehow!
+        restartLoader();
     }
 }
