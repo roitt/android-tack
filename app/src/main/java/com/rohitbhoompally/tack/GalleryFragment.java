@@ -81,7 +81,7 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
         String[] projection = { MediaStore.Images.Media.DATA,
                 MediaStore.Images.Media._ID, MediaStore.Images.Media.DISPLAY_NAME, MediaStore.Images.Media.DATE_ADDED};
         String select = MediaStore.Images.Media.DISPLAY_NAME + " like 'TACK_%'";
-        String sort = MediaStore.Images.Media.DATE_ADDED;
+        String sort = MediaStore.Images.Media.DATE_ADDED + " DESC";
         Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         return new CursorLoader(mContext, uri, projection, select, null, sort);
     }
