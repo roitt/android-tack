@@ -45,9 +45,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private static String TAG = "Camera Fragment";
     public static final int MEDIA_TYPE_IMAGE = 1;
     private static final String LOG_TAG = "CameraPreviewSample";
-    private static final String CAMERA_PARAM_ORIENTATION = "orientation";
-    private static final String CAMERA_PARAM_LANDSCAPE = "landscape";
-    private static final String CAMERA_PARAM_PORTRAIT = "portrait";
     protected Activity mActivity;
     private SurfaceHolder mHolder;
     protected Camera mCamera;
@@ -605,15 +602,15 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             case Surface.ROTATION_270: orientation = 270; break;
         }
 
-        int result;
-        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT)
-        {
-            result = (info.orientation + orientation) % 360;
-            result = (360 - result) % 360;  // compensate the mirror
-        } else
-        {  // back-facing
-            result = (info.orientation - orientation + 360) % 360;
-        }
+        int result = (info.orientation - orientation + 360) % 360;
+//        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT)
+//        {
+//            result = (info.orientation + orientation) % 360;
+//            result = (360 - result) % 360;  // compensate the mirror
+//        } else
+//        {  // back-facing
+//            result = (info.orientation - orientation + 360) % 360;
+//        }
 
         switch(result) {
             case 0:
