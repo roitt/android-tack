@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <com.rohitbhoompally.tack.RectagularHLayout
+        android:id="@+id/grid_image_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.rohitbhoompally.tack.RectagularHLayout>
+
+    <ImageButton
+        android:id="@+id/retake"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/transparent"
+        android:src="@drawable/ic_retake"
+        android:layout_gravity="top|right"
+        android:layout_margin="5dp"
+        android:scaleType="fitXY"
+        />
+
+</FrameLayout>
