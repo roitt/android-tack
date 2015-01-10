@@ -4,4 +4,5 @@
     <drawable name="transparent">#00000000</drawable>
     <drawable name="grey">#FF3C3D3D</drawable>
     <drawable name="black">#AF000000</drawable>
+    <drawable name="whitish">#EEFFFFFF</drawable>
 </resources>

@@ -95,33 +95,33 @@ public class GalleryFragment extends Fragment implements LoaderManager.LoaderCal
         // Gets a handle to the GridView in the layout
         mGridView = ((GridView) view.findViewById(R.id.images_gridview));
 
-        // Instantiates a DisplayMetrics object
-        DisplayMetrics localDisplayMetrics = new DisplayMetrics();
-
-        // Gets the current display metrics from the current Window
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(localDisplayMetrics);
-
-        /*
-         * Gets the dp value from the thumbSize resource as an integer in dps. The value can
-         * be adjusted for specific display sizes, etc. in the dimens.xml file for a particular
-         * values-<qualifier> directory
-         */
-        int pixelSize = getResources().getDimensionPixelSize(R.dimen.thumbSize);
-
-        /*
-         * Calculates a width scale factor from the pixel width of the current display and the
-         * desired pixel size
-         */
-        int widthScale = localDisplayMetrics.widthPixels / pixelSize;
-
-        // Calculates the grid column width
-        int mColumnWidth = (localDisplayMetrics.widthPixels / widthScale);
-
-        // Sets the GridView's column width
-        mGridView.setColumnWidth(mColumnWidth);
-
-        // Starts by setting the GridView to have no columns
-        mGridView.setNumColumns(-1);
+//        // Instantiates a DisplayMetrics object
+//        DisplayMetrics localDisplayMetrics = new DisplayMetrics();
+//
+//        // Gets the current display metrics from the current Window
+//        getActivity().getWindowManager().getDefaultDisplay().getMetrics(localDisplayMetrics);
+//
+//        /*
+//         * Gets the dp value from the thumbSize resource as an integer in dps. The value can
+//         * be adjusted for specific display sizes, etc. in the dimens.xml file for a particular
+//         * values-<qualifier> directory
+//         */
+//        int pixelSize = getResources().getDimensionPixelSize(R.dimen.thumbSize);
+//
+//        /*
+//         * Calculates a width scale factor from the pixel width of the current display and the
+//         * desired pixel size
+//         */
+//        int widthScale = localDisplayMetrics.widthPixels / pixelSize;
+//
+//        // Calculates the grid column width
+//        int mColumnWidth = (localDisplayMetrics.widthPixels / widthScale);
+//
+//        // Sets the GridView's column width
+//        mGridView.setColumnWidth(mColumnWidth);
+//
+//        // Starts by setting the GridView to have no columns
+//        mGridView.setNumColumns(-1);
 
         // Sets the GridView's data adapter
         mGridView.setAdapter(mAdapter);

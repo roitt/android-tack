@@ -1,47 +1,28 @@
 package com.rohitbhoompally.tack;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
-import android.hardware.Camera.PictureCallback;
-import android.hardware.Camera.ShutterCallback;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.SurfaceView;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+
+import java.util.List;
 
 /**
  * Created by Rohit Bhoompally on 12/8/14.
@@ -49,7 +30,7 @@ import android.widget.Toast;
 public class CameraFragment extends Fragment {
     private Context mContext;
     private CameraPreview mPreview;
-    RelativeLayout bottomLayout;
+    BottomButtonsLayout bottomLayout;
     FrameLayout cameraLayout;
     ImageButton flashButton;
     ImageButton switchButton;
@@ -102,22 +83,16 @@ public class CameraFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
         cameraLayout = (FrameLayout) view.findViewById(R.id.camera_preview);
-        bottomLayout = (RelativeLayout) view.findViewById(R.id.bottom_rl);
+        bottomLayout = (BottomButtonsLayout) view.findViewById(R.id.bottom_rl);
 
         flashButton = (ImageButton) view.findViewById(R.id.flash_button);
         switchButton = (ImageButton) view.findViewById(R.id.switch_camera_button);
         drawingView = (DrawingView) view.findViewById(R.id.drawView);
 
-        // Resize the layout
-        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int actionBarHeight = getActionBarHeight(mContext);
-        int screenHeight = size.y - size.x - actionBarHeight;
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, screenHeight);
-        params.gravity = Gravity.BOTTOM;
-        bottomLayout.setLayoutParams(params);
+        SquareLayout squareLayout = (SquareLayout) view.findViewById(R.id.root_layout);
+        View square2View = inflater.inflate(R.layout.square_2_vertical, null);
+
+        squareLayout.addView(square2View);
 
         ImageButton captureButton = (ImageButton) view.findViewById(R.id.capture_button);
         captureButton.setOnClickListener(
