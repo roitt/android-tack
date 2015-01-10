@@ -2,12 +2,13 @@ package com.rohitbhoompally.tack;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.GridView;
 import android.widget.RelativeLayout;
 
 /**
  * Created by Rohit on 1/8/15.
  */
-public class SquareLayout extends RelativeLayout {
+public class SquareLayout extends GridView {
 
     public SquareLayout(Context context) {
         super(context);

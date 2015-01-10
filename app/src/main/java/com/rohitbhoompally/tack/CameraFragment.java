@@ -8,6 +8,7 @@ import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ public class CameraFragment extends Fragment {
     ImageButton flashButton;
     ImageButton switchButton;
     DrawingView drawingView;
+    CustomGridView gAdapter;
 
     List<String> flashModes;
     private int mCameraId = 0;
@@ -90,9 +92,10 @@ public class CameraFragment extends Fragment {
         drawingView = (DrawingView) view.findViewById(R.id.drawView);
 
         SquareLayout squareLayout = (SquareLayout) view.findViewById(R.id.root_layout);
-        View square2View = inflater.inflate(R.layout.square_2_vertical, null);
-
-        squareLayout.addView(square2View);
+//        View square2View = inflater.inflate(R.layout.square_2_vertical, null);
+//
+//        squareLayout.addView(square2View);
+        finalizeGridViewLayout(squareLayout);
 
         ImageButton captureButton = (ImageButton) view.findViewById(R.id.capture_button);
         captureButton.setOnClickListener(
@@ -233,5 +236,32 @@ public class CameraFragment extends Fragment {
         mPreview = new CameraPreview(getActivity(), mCameraId, CameraPreview.LayoutMode.FitToParent, drawingView);
         LayoutParams previewLayoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         cameraLayout.addView(mPreview, 0, previewLayoutParams);
+    }
+
+    public void finalizeGridViewLayout(SquareLayout squareLayout) {
+        int position = FrameImageAdapter.mSelectedPosition;
+        // Instantiates a DisplayMetrics object
+        DisplayMetrics localDisplayMetrics = new DisplayMetrics();
+
+        // Gets the current display metrics from the current Window
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(localDisplayMetrics);
+
+        switch (position) {
+            case GridLayoutItems.SQUARE_2_HORIZONTAL:
+                // Starts by setting the GridView to have no columns
+                squareLayout.setNumColumns(1);
+                int[] defaultImages = {R.drawable.transparent, R.drawable.whitish};
+                gAdapter = new CustomGridView(mContext, defaultImages);
+                break;
+            case GridLayoutItems.SQUARE_2_VERTICAL:
+                break;
+            case GridLayoutItems.SQUARE_3_HORIZONTAL:
+                break;
+            case GridLayoutItems.SQUARE_3_VERTICAL:
+                break;
+            case GridLayoutItems.SQUARE_4:
+                break;
+        }
+        squareLayout.setAdapter(gAdapter);
     }
 }
