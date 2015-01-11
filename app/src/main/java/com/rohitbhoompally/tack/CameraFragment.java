@@ -128,13 +128,31 @@ public class CameraFragment extends Fragment {
                 toggleFlashes();
             }
         });
-
         switchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 toggleCameras();
             }
         });
+
+        /* Handling navigation to frames fragment */
+        ImageButton framesButton = (ImageButton) view.findViewById(R.id.frames_button);
+        framesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.setViewPagerItem(0);
+            }
+        });
+
+        ImageButton photosButton = (ImageButton) view.findViewById(R.id.photos_button);
+        photosButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.setViewPagerItem(2);
+            }
+        });
+
+
         return view;
     }
 

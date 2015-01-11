@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
     /**
      * The {@link ViewPager} that will host the section contents.
      */
-    ViewPager mViewPager;
+    private static ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,5 +94,9 @@ public class MainActivity extends Activity {
             // Show 3 total pages.
             return 3;
         }
+    }
+
+    public static void setViewPagerItem(int position) {
+        mViewPager.setCurrentItem(position);
     }
 }
