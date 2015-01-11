@@ -2,12 +2,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <com.rohitbhoompally.tack.RectagularHLayout
+    <com.rohitbhoompally.tack.customviews.RectagularHLayout
         android:id="@+id/grid_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </com.rohitbhoompally.tack.RectagularHLayout>
+    </com.rohitbhoompally.tack.customviews.RectagularHLayout>
 
     <ImageButton
         android:id="@+id/retake"

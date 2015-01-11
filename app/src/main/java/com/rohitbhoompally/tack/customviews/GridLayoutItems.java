@@ -1,4 +1,4 @@
-package com.rohitbhoompally.tack;
+package com.rohitbhoompally.tack.customviews;
 
 /**
  * Created by Rohit on 1/10/15.

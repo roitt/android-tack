@@ -4,24 +4,26 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
+
+import com.rohitbhoompally.tack.adapters.CustomGridViewAdapter;
+import com.rohitbhoompally.tack.adapters.FrameImageAdapter;
+import com.rohitbhoompally.tack.customviews.BottomButtonsLayout;
+import com.rohitbhoompally.tack.customviews.DrawingView;
+import com.rohitbhoompally.tack.customviews.GridLayoutItems;
+import com.rohitbhoompally.tack.customviews.SquareLayout;
+import com.rohitbhoompally.tack.utils.SharedPrefHandler;
 
 import java.util.List;
 
@@ -36,7 +38,7 @@ public class CameraFragment extends Fragment {
     ImageButton flashButton;
     ImageButton switchButton;
     DrawingView drawingView;
-    CustomGridView gAdapter;
+    CustomGridViewAdapter gAdapter;
 
     List<String> flashModes;
     private int mCameraId = 0;
@@ -240,26 +242,33 @@ public class CameraFragment extends Fragment {
 
     public void finalizeGridViewLayout(SquareLayout squareLayout) {
         int position = FrameImageAdapter.mSelectedPosition;
-        // Instantiates a DisplayMetrics object
-        DisplayMetrics localDisplayMetrics = new DisplayMetrics();
-
-        // Gets the current display metrics from the current Window
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(localDisplayMetrics);
-
         switch (position) {
             case GridLayoutItems.SQUARE_2_HORIZONTAL:
-                // Starts by setting the GridView to have no columns
+                // This layout requires 1 column and 2 rows
                 squareLayout.setNumColumns(1);
-                int[] defaultImages = {R.drawable.transparent, R.drawable.whitish};
-                gAdapter = new CustomGridView(mContext, defaultImages);
+                int[] dImagesS2H = {R.drawable.transparent, R.drawable.whitish};
+                gAdapter = new CustomGridViewAdapter(mContext, dImagesS2H, position);
                 break;
             case GridLayoutItems.SQUARE_2_VERTICAL:
+                // This layout requires 1 column and 1 rows
+                squareLayout.setNumColumns(2);
+                int[] dImagesS2V = {R.drawable.transparent, R.drawable.whitish};
+                gAdapter = new CustomGridViewAdapter(mContext, dImagesS2V, position);
                 break;
             case GridLayoutItems.SQUARE_3_HORIZONTAL:
+                squareLayout.setNumColumns(1);
+                int[] dImagesS3H = {R.drawable.transparent, R.drawable.whitish, R.drawable.whitish};
+                gAdapter = new CustomGridViewAdapter(mContext, dImagesS3H, position);
                 break;
             case GridLayoutItems.SQUARE_3_VERTICAL:
+                squareLayout.setNumColumns(3);
+                int[] dImagesS3V = {R.drawable.transparent, R.drawable.whitish, R.drawable.whitish};
+                gAdapter = new CustomGridViewAdapter(mContext, dImagesS3V, position);
                 break;
             case GridLayoutItems.SQUARE_4:
+                squareLayout.setNumColumns(3);
+                int[] dImagesS4V = {R.drawable.transparent, R.drawable.whitish, R.drawable.whitish, R.drawable.whitish};
+                gAdapter = new CustomGridViewAdapter(mContext, dImagesS4V, position);
                 break;
         }
         squareLayout.setAdapter(gAdapter);

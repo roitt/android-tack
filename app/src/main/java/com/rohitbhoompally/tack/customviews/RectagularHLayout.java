@@ -1,13 +1,12 @@
-package com.rohitbhoompally.tack;
+package com.rohitbhoompally.tack.customviews;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 /**
  * Created by Rohit on 1/9/15.
  */
-public class RectagularHLayout extends ImageView {
+public class RectagularHLayout extends OverlayLayout {
     public RectagularHLayout(Context context) {
         super(context);
     }

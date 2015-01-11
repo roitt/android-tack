@@ -1,4 +1,4 @@
-package com.rohitbhoompally.tack;
+package com.rohitbhoompally.tack.customviews;
 
 import android.content.Context;
 import android.graphics.Canvas;

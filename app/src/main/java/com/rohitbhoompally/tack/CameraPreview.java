@@ -37,6 +37,10 @@ import android.view.SurfaceView;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.rohitbhoompally.tack.customviews.DrawingView;
+import com.rohitbhoompally.tack.utils.BusProvider;
+import com.rohitbhoompally.tack.utils.PictureTakenEvent;
+
 /**
  * This class assumes the parent layout is RelativeLayout.LayoutParams.
  */

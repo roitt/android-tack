@@ -1,4 +1,4 @@
-package com.rohitbhoompally.tack;
+package com.rohitbhoompally.tack.utils;
 
 import com.squareup.otto.Bus;
 

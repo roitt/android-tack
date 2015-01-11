@@ -1,4 +1,4 @@
-package com.rohitbhoompally.tack;
+package com.rohitbhoompally.tack.customviews;
 
 import android.app.ActionBar;
 import android.app.Fragment;
@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
+
+import com.rohitbhoompally.tack.R;
+import com.rohitbhoompally.tack.adapters.FrameImageAdapter;
 
 /**
  * Created by Rohit Bhoompally on 12/8/14.

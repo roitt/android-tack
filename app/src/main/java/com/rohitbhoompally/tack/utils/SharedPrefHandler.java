@@ -1,4 +1,4 @@
-package com.rohitbhoompally.tack;
+package com.rohitbhoompally.tack.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

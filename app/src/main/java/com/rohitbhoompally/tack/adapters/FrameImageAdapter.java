@@ -1,4 +1,4 @@
-package com.rohitbhoompally.tack;
+package com.rohitbhoompally.tack.adapters;
 
 import android.content.Context;
 import android.view.View;
@@ -7,12 +7,14 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.rohitbhoompally.tack.R;
+
 /**
  * Created by Rohit on 1/3/15.
  */
 public class FrameImageAdapter extends BaseAdapter {
     private Context mContext;
-    static int mSelectedPosition;
+    public static int mSelectedPosition;
 
     public FrameImageAdapter(Context c) {
         mContext = c;

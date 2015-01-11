@@ -12,21 +12,21 @@
 
     />
 
-    <com.rohitbhoompally.tack.SquareLayout
+    <com.rohitbhoompally.tack.customviews.SquareLayout
         android:id="@+id/root_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="top"
         >
 
-    </com.rohitbhoompally.tack.SquareLayout>
+    </com.rohitbhoompally.tack.customviews.SquareLayout>
 
-    <com.rohitbhoompally.tack.DrawingView
+    <com.rohitbhoompally.tack.customviews.DrawingView
         android:id="@+id/drawView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <com.rohitbhoompally.tack.BottomButtonsLayout
+    <com.rohitbhoompally.tack.customviews.BottomButtonsLayout
         android:id="@+id/bottom_rl"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -66,6 +66,6 @@
             android:layout_centerVertical="true"
             android:scaleType="fitXY"/>
 
-    </com.rohitbhoompally.tack.BottomButtonsLayout>
+    </com.rohitbhoompally.tack.customviews.BottomButtonsLayout>
 
 </FrameLayout>
