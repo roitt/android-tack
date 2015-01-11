@@ -151,8 +151,6 @@ public class CameraFragment extends Fragment {
                 MainActivity.setViewPagerItem(2);
             }
         });
-
-
         return view;
     }
 

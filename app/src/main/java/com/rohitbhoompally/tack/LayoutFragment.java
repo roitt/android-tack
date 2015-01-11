@@ -57,7 +57,8 @@ public class LayoutFragment extends Fragment {
                 FrameImageAdapter.mSelectedPosition = position;
                 mFrameImageAdapter.notifyDataSetChanged();
                 // Send event notification
-                BusProvider.getInstance().post(new LayoutChangedEvent("Picture Taken"));
+                BusProvider.getInstance().post(new LayoutChangedEvent("Layout changed."));
+                MainActivity.setViewPagerItem(1);
             }
         });
         return view;
