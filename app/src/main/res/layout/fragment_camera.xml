@@ -31,41 +31,100 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="#ff262525"
-        android:padding="10dp"
-        android:layout_gravity="bottom">
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        >
 
-        <ImageButton
-            android:id="@+id/capture_button"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/capture_button_selector"
-            android:scaleType="fitXY"
-            android:background="@drawable/transparent"/>
+        <com.rohitbhoompally.tack.customviews.CamButtonsLayout
+            android:id="@+id/cam_buttons_rl"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:weightSum="0.9"
+            android:orientation="horizontal"
+            android:layout_alignParentTop="true">
 
-        <ImageButton
-            android:id="@+id/flash_button"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_toRightOf="@id/capture_button"
-            android:layout_marginLeft="50dp"
-            android:src="@drawable/flash_no_selector"
-            android:background="@drawable/transparent"
-            android:layout_centerVertical="true"
-            android:scaleType="fitXY"
-            />
+            <ImageButton
+                android:id="@+id/switch_camera_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/camera_switch_selector"
+                android:background="@drawable/transparent"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center"
+                android:layout_weight="0.3"/>
 
-        <ImageButton
-            android:id="@+id/switch_camera_button"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_toLeftOf="@id/capture_button"
-            android:layout_marginRight="50dp"
-            android:src="@drawable/camera_switch_selector"
-            android:background="@drawable/transparent"
-            android:layout_centerVertical="true"
-            android:scaleType="fitXY"/>
+            <ImageButton
+                android:id="@+id/text_toggle_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/text_selector"
+                android:background="@drawable/transparent"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center"
+                android:layout_weight="0.3"/>
 
+            <ImageButton
+                android:id="@+id/flash_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/flash_no_selector"
+                android:background="@drawable/transparent"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center"
+                android:layout_weight="0.3"
+                />
+
+        </com.rohitbhoompally.tack.customviews.CamButtonsLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+            android:layout_below="@id/cam_buttons_rl"
+            android:padding="5dp"
+            android:id="@+id/capture_buttons_rl">
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:background="@drawable/grey"
+                android:layout_alignParentTop="true"
+                />
+
+            <ImageButton
+                android:id="@+id/capture_button"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/capture_button_selector"
+                android:scaleType="fitCenter"
+                android:background="@drawable/transparent"
+                />
+
+            <ImageButton
+                android:id="@+id/frames_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/frames_fragment_selector"
+                android:background="@drawable/transparent"
+                android:scaleType="fitCenter"
+                android:layout_marginRight="50dp"
+                android:layout_toLeftOf="@id/capture_button"
+                android:layout_centerVertical="true"
+                />
+
+            <ImageButton
+                android:id="@+id/photos_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/photos_fragment_selector"
+                android:background="@drawable/transparent"
+                android:scaleType="fitCenter"
+                android:layout_marginLeft="50dp"
+                android:layout_toRightOf="@id/capture_button"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
     </com.rohitbhoompally.tack.customviews.BottomButtonsLayout>
 
 </FrameLayout>

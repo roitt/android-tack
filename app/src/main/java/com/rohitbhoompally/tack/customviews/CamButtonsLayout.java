@@ -3,28 +3,26 @@ package com.rohitbhoompally.tack.customviews;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 /**
- * Created by Rohit on 1/9/15.
+ * Created by Rohit on 1/11/15.
  */
-public class BottomButtonsLayout extends RelativeLayout {
-
-    public BottomButtonsLayout(Context context) {
+public class CamButtonsLayout extends LinearLayout {
+    public CamButtonsLayout(Context context) {
         super(context);
     }
 
-    public BottomButtonsLayout(Context context, AttributeSet attrs) {
+    public CamButtonsLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int width = MeasureSpec.getSize(widthMeasureSpec);
-        int height = MeasureSpec.getSize(heightMeasureSpec) - width;
+        int height = MeasureSpec.getSize(heightMeasureSpec);
         super.onMeasure(
                 MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
+                MeasureSpec.makeMeasureSpec((int) (height * 0.4), MeasureSpec.EXACTLY)
         );
     }
 }

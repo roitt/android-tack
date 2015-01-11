@@ -68,7 +68,6 @@ public class CustomGridViewAdapter extends BaseAdapter {
         ViewGroup gridImageView = (RelativeLayout) grid.findViewById(R.id.grid_image_view);
         gridImageView.removeAllViewsInLayout();
         gridImageView.addView(imageView);
-
         return grid;
     }
 
