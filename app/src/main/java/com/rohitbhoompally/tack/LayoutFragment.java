@@ -1,4 +1,4 @@
-package com.rohitbhoompally.tack.customviews;
+package com.rohitbhoompally.tack;
 
 import android.app.ActionBar;
 import android.app.Fragment;
@@ -12,8 +12,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.rohitbhoompally.tack.R;
 import com.rohitbhoompally.tack.adapters.FrameImageAdapter;
+import com.rohitbhoompally.tack.utils.BusProvider;
+import com.rohitbhoompally.tack.utils.LayoutChangedEvent;
+import com.rohitbhoompally.tack.utils.PictureTakenEvent;
 
 /**
  * Created by Rohit Bhoompally on 12/8/14.
@@ -54,6 +56,8 @@ public class LayoutFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 FrameImageAdapter.mSelectedPosition = position;
                 mFrameImageAdapter.notifyDataSetChanged();
+                // Send event notification
+                BusProvider.getInstance().post(new LayoutChangedEvent("Picture Taken"));
             }
         });
         return view;

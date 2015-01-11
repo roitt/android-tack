@@ -20,8 +20,8 @@ public class RectangularLayout4 extends OverlayLayout {
         int width = MeasureSpec.getSize(widthMeasureSpec);
 
         super.onMeasure(
-                MeasureSpec.makeMeasureSpec(width / 2, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(width / 2, MeasureSpec.EXACTLY)
+                MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY)
         );
     }
 }

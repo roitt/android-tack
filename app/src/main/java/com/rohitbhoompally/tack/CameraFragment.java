@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
@@ -23,7 +24,11 @@ import com.rohitbhoompally.tack.customviews.BottomButtonsLayout;
 import com.rohitbhoompally.tack.customviews.DrawingView;
 import com.rohitbhoompally.tack.customviews.GridLayoutItems;
 import com.rohitbhoompally.tack.customviews.SquareLayout;
+import com.rohitbhoompally.tack.utils.BusProvider;
+import com.rohitbhoompally.tack.utils.LayoutChangedEvent;
+import com.rohitbhoompally.tack.utils.PictureTakenEvent;
 import com.rohitbhoompally.tack.utils.SharedPrefHandler;
+import com.squareup.otto.Subscribe;
 
 import java.util.List;
 
@@ -38,6 +43,7 @@ public class CameraFragment extends Fragment {
     ImageButton flashButton;
     ImageButton switchButton;
     DrawingView drawingView;
+    SquareLayout squareLayout;
     CustomGridViewAdapter gAdapter;
 
     List<String> flashModes;
@@ -69,6 +75,7 @@ public class CameraFragment extends Fragment {
         checkCameras();
         checkFlash();
         setFlashMode(activeFlash);
+        BusProvider.getInstance().register(this);
     }
 
     @Override
@@ -79,6 +86,7 @@ public class CameraFragment extends Fragment {
         mPreview.stop();
         cameraLayout.removeView(mPreview); // This is necessary.
         mPreview = null;
+        BusProvider.getInstance().unregister(this);
     }
 
     @Override
@@ -93,11 +101,16 @@ public class CameraFragment extends Fragment {
         switchButton = (ImageButton) view.findViewById(R.id.switch_camera_button);
         drawingView = (DrawingView) view.findViewById(R.id.drawView);
 
-        SquareLayout squareLayout = (SquareLayout) view.findViewById(R.id.root_layout);
-//        View square2View = inflater.inflate(R.layout.square_2_vertical, null);
-//
-//        squareLayout.addView(square2View);
+        squareLayout = (SquareLayout) view.findViewById(R.id.root_layout);
         finalizeGridViewLayout(squareLayout);
+
+        squareLayout.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                CustomGridViewAdapter.mViewSelectedPosition = position;
+                gAdapter.notifyDataSetInvalidated();
+            }
+        });
 
         ImageButton captureButton = (ImageButton) view.findViewById(R.id.capture_button);
         captureButton.setOnClickListener(
@@ -242,35 +255,41 @@ public class CameraFragment extends Fragment {
 
     public void finalizeGridViewLayout(SquareLayout squareLayout) {
         int position = FrameImageAdapter.mSelectedPosition;
+        int numberOfItems = 0;
         switch (position) {
             case GridLayoutItems.SQUARE_2_HORIZONTAL:
                 // This layout requires 1 column and 2 rows
                 squareLayout.setNumColumns(1);
-                int[] dImagesS2H = {R.drawable.transparent, R.drawable.whitish};
-                gAdapter = new CustomGridViewAdapter(mContext, dImagesS2H, position);
+                numberOfItems = 2;
                 break;
             case GridLayoutItems.SQUARE_2_VERTICAL:
                 // This layout requires 1 column and 1 rows
                 squareLayout.setNumColumns(2);
-                int[] dImagesS2V = {R.drawable.transparent, R.drawable.whitish};
-                gAdapter = new CustomGridViewAdapter(mContext, dImagesS2V, position);
+                numberOfItems = 2;
                 break;
             case GridLayoutItems.SQUARE_3_HORIZONTAL:
                 squareLayout.setNumColumns(1);
-                int[] dImagesS3H = {R.drawable.transparent, R.drawable.whitish, R.drawable.whitish};
-                gAdapter = new CustomGridViewAdapter(mContext, dImagesS3H, position);
+                numberOfItems = 3;
                 break;
             case GridLayoutItems.SQUARE_3_VERTICAL:
                 squareLayout.setNumColumns(3);
-                int[] dImagesS3V = {R.drawable.transparent, R.drawable.whitish, R.drawable.whitish};
-                gAdapter = new CustomGridViewAdapter(mContext, dImagesS3V, position);
+                numberOfItems = 3;
                 break;
             case GridLayoutItems.SQUARE_4:
-                squareLayout.setNumColumns(3);
-                int[] dImagesS4V = {R.drawable.transparent, R.drawable.whitish, R.drawable.whitish, R.drawable.whitish};
-                gAdapter = new CustomGridViewAdapter(mContext, dImagesS4V, position);
+                squareLayout.setNumColumns(2);
+                numberOfItems = 4;
                 break;
         }
+        gAdapter = new CustomGridViewAdapter(mContext, numberOfItems, position);
         squareLayout.setAdapter(gAdapter);
+    }
+
+    @Subscribe
+    public void layoutRefresh(LayoutChangedEvent event) {
+        // TODO: React to the event somehow!
+        if(gAdapter != null && squareLayout != null) {
+
+            finalizeGridViewLayout(squareLayout);
+        }
     }
 }

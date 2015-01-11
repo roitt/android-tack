@@ -21,8 +21,8 @@ public class RectangularVLayout3 extends OverlayLayout {
         int width = MeasureSpec.getSize(widthMeasureSpec);
 
         super.onMeasure(
-                MeasureSpec.makeMeasureSpec(width / 3, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY)
+                MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(width * 3, MeasureSpec.EXACTLY)
         );
     }
 }
