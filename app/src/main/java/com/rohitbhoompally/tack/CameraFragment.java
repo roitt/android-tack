@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
@@ -26,6 +27,7 @@ import com.rohitbhoompally.tack.customviews.GridLayoutItems;
 import com.rohitbhoompally.tack.customviews.OverlayLayout;
 import com.rohitbhoompally.tack.customviews.SquareLayout;
 import com.rohitbhoompally.tack.utils.BusProvider;
+import com.rohitbhoompally.tack.utils.GlobalState;
 import com.rohitbhoompally.tack.utils.LayoutChangedEvent;
 import com.rohitbhoompally.tack.utils.PictureFinalizedEvent;
 import com.rohitbhoompally.tack.utils.PictureTakenEvent;
@@ -97,6 +99,9 @@ public class CameraFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
+        Button redoBTN = (Button) view.findViewById(R.id.retake_button);
+        Button doneBTN = (Button) view.findViewById(R.id.done_button);
+
         cameraLayout = (FrameLayout) view.findViewById(R.id.camera_preview);
         bottomLayout = (BottomButtonsLayout) view.findViewById(R.id.bottom_rl);
         bottomLayoutAfterPhoto = (BottomButtonsLayout) view.findViewById(R.id.bottom_rl_after_image);
@@ -162,6 +167,23 @@ public class CameraFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 MainActivity.setViewPagerItem(2);
+            }
+        });
+
+        redoBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GlobalState.clearBitmaps();
+                CustomGridViewAdapter.mViewSelectedPosition = 0;
+                makeBeforePhotoActive();
+                gAdapter.notifyDataSetChanged();
+            }
+        });
+
+        doneBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
         return view;
@@ -340,5 +362,10 @@ public class CameraFragment extends Fragment {
     public void makeAfterPhotoActive() {
         bottomLayout.setVisibility(View.GONE);
         bottomLayoutAfterPhoto.setVisibility(View.VISIBLE);
+    }
+
+    public void makeBeforePhotoActive() {
+        bottomLayout.setVisibility(View.VISIBLE);
+        bottomLayoutAfterPhoto.setVisibility(View.GONE);
     }
 }
