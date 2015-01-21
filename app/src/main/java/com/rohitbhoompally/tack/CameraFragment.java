@@ -324,5 +324,21 @@ public class CameraFragment extends Fragment {
     @Subscribe
     public void adapterRefresh(PictureFinalizedEvent event) {
         gAdapter.notifyDataSetInvalidated();
+
+        /* Decide whether or not we refresh the bottom layout */
+        refreshBottomLayout();
+    }
+
+    public void refreshBottomLayout() {
+        if(gAdapter != null) {
+            if(gAdapter.getCurrentImages() >= gAdapter.getTotalImagesNeeded()) {
+                makeAfterPhotoActive();
+            }
+        }
+    }
+
+    public void makeAfterPhotoActive() {
+        bottomLayout.setVisibility(View.GONE);
+        bottomLayoutAfterPhoto.setVisibility(View.VISIBLE);
     }
 }

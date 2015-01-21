@@ -108,4 +108,12 @@ public class CustomGridViewAdapter extends BaseAdapter {
                 return null;
         }
     }
+
+    public int getTotalImagesNeeded() {
+        return mNumberOfItems;
+    }
+
+    public int getCurrentImages() {
+        return GlobalState.getClickedBitmaps().size();
+    }
 }
