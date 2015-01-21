@@ -37,8 +37,14 @@ import android.view.SurfaceView;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.rohitbhoompally.tack.adapters.CustomGridViewAdapter;
+import com.rohitbhoompally.tack.adapters.FrameImageAdapter;
 import com.rohitbhoompally.tack.customviews.DrawingView;
+import com.rohitbhoompally.tack.customviews.GridLayoutItems;
 import com.rohitbhoompally.tack.utils.BusProvider;
+import com.rohitbhoompally.tack.utils.GlobalState;
+import com.rohitbhoompally.tack.utils.LayoutChangedEvent;
+import com.rohitbhoompally.tack.utils.PictureFinalizedEvent;
 import com.rohitbhoompally.tack.utils.PictureTakenEvent;
 
 /**
@@ -465,6 +471,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 Log.d(TAG, "Error accessing file: " + e.getMessage());
             }
 
+            /* At this point the image is in the sdcard with the right orientation */
+            Bitmap savedBitmap = BitmapFactory.decodeFile(pictureFile.getAbsolutePath());
+            savedBitmap = rotateIfNeeded(savedBitmap, pictureFile.getAbsolutePath().toString());
+            savedBitmap = cropBitmapByFrame(savedBitmap);
+            GlobalState.addBitmapAtPosition(savedBitmap, CustomGridViewAdapter.mViewSelectedPosition);
+            BusProvider.getInstance().post(new PictureFinalizedEvent("Picture Finalized"));
+            mCamera.startPreview();
         }
     };
 
@@ -478,12 +491,63 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
     };
 
-    /** This method rotates the images if needed as per Exif **/
-    protected Bitmap rotateImage(Bitmap bm, int degrees) {
+    protected Bitmap rotateIfNeeded(Bitmap bitmap, String imagePath) {
+        ExifInterface exif = null;
+        try
+        {
+            exif = new ExifInterface(imagePath);
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        int orientation = 0;
+        if(exif != null) {
+            orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+        }
+        return rotateBitmap(bitmap, orientation);
+    }
+
+    public static Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
         Matrix matrix = new Matrix();
-        matrix.postRotate(degrees);
-        return Bitmap.createBitmap(bm, 0, 0,
-                bm.getWidth(), bm.getHeight(), matrix, true);
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_NORMAL:
+                return bitmap;
+            case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
+                matrix.setScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                matrix.setRotate(180);
+                break;
+            case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+                matrix.setRotate(180);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_TRANSPOSE:
+                matrix.setRotate(90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                matrix.setRotate(90);
+                break;
+            case ExifInterface.ORIENTATION_TRANSVERSE:
+                matrix.setRotate(-90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                matrix.setRotate(-90);
+                break;
+            default:
+                return bitmap;
+        }
+        try {
+            Bitmap bmRotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            bitmap.recycle();
+            return bmRotated;
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /** This method downscales the image to our requirements **/
@@ -707,5 +771,49 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             }, 1000);
         }
         return false;
+    }
+
+    public Bitmap cropBitmapByFrame(Bitmap bitmap) {
+        int layoutPosition = FrameImageAdapter.mSelectedPosition;
+        int framePosition = CustomGridViewAdapter.mViewSelectedPosition;
+
+        int width = Math.min(bitmap.getWidth(), bitmap.getHeight());
+
+        /* Square crop */
+        bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, width);
+
+        /* At this point he image is square cropped in the top half and ready to be custom cropped based on layout */
+        switch (layoutPosition) {
+            case GridLayoutItems.SQUARE_2_HORIZONTAL:
+                bitmap = square2HorizontalCrop(bitmap, framePosition);
+                break;
+            case GridLayoutItems.SQUARE_2_VERTICAL:
+
+                break;
+            case GridLayoutItems.SQUARE_3_HORIZONTAL:
+
+                break;
+            case GridLayoutItems.SQUARE_3_VERTICAL:
+
+                break;
+            case GridLayoutItems.SQUARE_4:
+
+                break;
+        }
+        return bitmap;
+    }
+
+    public Bitmap square2HorizontalCrop(Bitmap bitmap, int position) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        switch (position) {
+            case 0:
+                bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height / 2);
+                break;
+            case 1:
+                bitmap = Bitmap.createBitmap(bitmap, 0, height / 2, width, height / 2);
+                break;
+        }
+        return bitmap;
     }
 }

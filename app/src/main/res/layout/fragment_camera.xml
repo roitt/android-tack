@@ -17,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="top"
+        android:listSelector="@drawable/transparent"
         >
 
     </com.rohitbhoompally.tack.customviews.SquareLayout>
@@ -33,6 +34,7 @@
         android:background="#ff262525"
         android:layout_gravity="bottom"
         android:orientation="vertical"
+        android:visibility="visible"
         >
 
         <com.rohitbhoompally.tack.customviews.CamButtonsLayout
@@ -127,4 +129,134 @@
         </RelativeLayout>
     </com.rohitbhoompally.tack.customviews.BottomButtonsLayout>
 
+    <com.rohitbhoompally.tack.customviews.BottomButtonsLayout
+        android:id="@+id/bottom_rl_after_image"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#ff262525"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/action_buttons_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1.0"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/retake_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:background="@drawable/action_button_selector"
+                android:text="@string/retake"
+                android:textColor="@drawable/whitish"
+                android:layout_margin="2dp"
+                />
+
+            <Button
+                android:id="@+id/done_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:background="@drawable/action_button_selector"
+                android:text="@string/done"
+                android:textColor="@drawable/actionbar_background"
+                android:layout_margin="2dp"
+
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/b_c_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="1.0"
+            android:orientation="vertical"
+            android:layout_above="@id/action_buttons_wrapper"
+            android:gravity="center">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_brightness"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_brightness"
+                    android:scaleType="fitXY"
+                    android:layout_margin="5dp"
+                    android:padding="5dp"/>
+
+                <SeekBar
+                    android:id="@+id/brightness_slider"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/iv_brightness"
+                    android:max="100"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="30dp"
+                    android:layout_centerVertical="true"
+                    android:thumbOffset="10dp"/>
+
+                <TextView
+                    android:id="@+id/tv_brightness"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="18sp"
+                    android:textColor="@drawable/whitish"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_contrast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_contrast"
+                    android:scaleType="fitXY"
+                    android:layout_margin="5dp"
+                    android:padding="5dp"/>
+
+                <SeekBar
+                    android:id="@+id/contrast_slider"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/iv_contrast"
+                    android:max="100"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="30dp"
+                    android:layout_centerVertical="true"
+                    android:thumbOffset="10dp"/>
+
+                <TextView
+                    android:id="@+id/tv_contrast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="18sp"
+                    android:textColor="@drawable/whitish"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </com.rohitbhoompally.tack.customviews.BottomButtonsLayout>
 </FrameLayout>

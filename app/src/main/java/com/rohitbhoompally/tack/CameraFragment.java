@@ -7,10 +7,10 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -23,9 +23,11 @@ import com.rohitbhoompally.tack.adapters.FrameImageAdapter;
 import com.rohitbhoompally.tack.customviews.BottomButtonsLayout;
 import com.rohitbhoompally.tack.customviews.DrawingView;
 import com.rohitbhoompally.tack.customviews.GridLayoutItems;
+import com.rohitbhoompally.tack.customviews.OverlayLayout;
 import com.rohitbhoompally.tack.customviews.SquareLayout;
 import com.rohitbhoompally.tack.utils.BusProvider;
 import com.rohitbhoompally.tack.utils.LayoutChangedEvent;
+import com.rohitbhoompally.tack.utils.PictureFinalizedEvent;
 import com.rohitbhoompally.tack.utils.PictureTakenEvent;
 import com.rohitbhoompally.tack.utils.SharedPrefHandler;
 import com.squareup.otto.Subscribe;
@@ -39,6 +41,7 @@ public class CameraFragment extends Fragment {
     private Context mContext;
     private CameraPreview mPreview;
     BottomButtonsLayout bottomLayout;
+    BottomButtonsLayout bottomLayoutAfterPhoto;
     FrameLayout cameraLayout;
     ImageButton flashButton;
     ImageButton switchButton;
@@ -96,6 +99,7 @@ public class CameraFragment extends Fragment {
 
         cameraLayout = (FrameLayout) view.findViewById(R.id.camera_preview);
         bottomLayout = (BottomButtonsLayout) view.findViewById(R.id.bottom_rl);
+        bottomLayoutAfterPhoto = (BottomButtonsLayout) view.findViewById(R.id.bottom_rl_after_image);
 
         flashButton = (ImageButton) view.findViewById(R.id.flash_button);
         switchButton = (ImageButton) view.findViewById(R.id.switch_camera_button);
@@ -109,6 +113,15 @@ public class CameraFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CustomGridViewAdapter.mViewSelectedPosition = position;
                 gAdapter.notifyDataSetInvalidated();
+            }
+        });
+
+        squareLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(mPreview != null)
+                    mPreview.dispatchTouchEvent(event);
+                return false;
             }
         });
 
@@ -304,8 +317,12 @@ public class CameraFragment extends Fragment {
     public void layoutRefresh(LayoutChangedEvent event) {
         // TODO: React to the event somehow!
         if(gAdapter != null && squareLayout != null) {
-
             finalizeGridViewLayout(squareLayout);
         }
+    }
+
+    @Subscribe
+    public void adapterRefresh(PictureFinalizedEvent event) {
+        gAdapter.notifyDataSetInvalidated();
     }
 }

@@ -1,6 +1,7 @@
 package com.rohitbhoompally.tack.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,9 @@ import com.rohitbhoompally.tack.customviews.RectagularVLayout;
 import com.rohitbhoompally.tack.customviews.RectangularHLayout3;
 import com.rohitbhoompally.tack.customviews.RectangularLayout4;
 import com.rohitbhoompally.tack.customviews.RectangularVLayout3;
+import com.rohitbhoompally.tack.utils.GlobalState;
+
+import java.util.ArrayList;
 
 /**
  * Created by Rohit on 1/10/15.
@@ -58,17 +62,28 @@ public class CustomGridViewAdapter extends BaseAdapter {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         grid = inflater.inflate(R.layout.layout_grid_item, null);
         ImageView refresh = (ImageView) grid.findViewById(R.id.retake);
-        imageView = getRequiredLayout(grid);
         refresh.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_retake));
-        if (mViewSelectedPosition == position)
-            imageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.transparent));
-        else
-            imageView.setBackground(mContext.getResources().getDrawable(R.drawable.whitish));
+        imageView = getRequiredLayout(grid);
+        populateBitmaps(imageView, position);
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         ViewGroup gridImageView = (RelativeLayout) grid.findViewById(R.id.grid_image_view);
         gridImageView.removeAllViewsInLayout();
         gridImageView.addView(imageView);
+
         return grid;
+    }
+
+    public void populateBitmaps(OverlayLayout imageView, int position) {
+        ArrayList<Bitmap> pictures = GlobalState.getClickedBitmaps();
+        if (mViewSelectedPosition == position) {
+            imageView.setImageDrawable(null);
+        }
+        else
+            imageView.setBackground(mContext.getResources().getDrawable(R.drawable.whitish));
+        if(pictures != null && !pictures.isEmpty()) {
+            if(position < pictures.size())
+                imageView.setImageBitmap(pictures.get(position));
+        }
     }
 
     public OverlayLayout getRequiredLayout(View grid) {

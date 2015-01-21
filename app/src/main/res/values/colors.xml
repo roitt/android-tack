@@ -5,4 +5,10 @@
     <drawable name="grey">#FF3C3D3D</drawable>
     <drawable name="black">#AF000000</drawable>
     <drawable name="whitish">#EEFFFFFF</drawable>
+
+    // Button colors
+    <color name="button_default">#FF2D2E2E</color>
+    <color name="button_pressed">#FF373838</color>
+    <color name="button_focused">#FF373838</color>
+    <color name="button_disabled">#EEA3A6A6</color>
 </resources>
